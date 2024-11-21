@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seçilen Görseller</title>
+</head>
+<body>
+    <h1>Seçilen Görseller</h1>
+    <div id="gallery"></div>
+
+    <script>
+        const gallery = document.getElementById('gallery');
+        const urlParams = new URLSearchParams(window.location.search);
+        const selectedImages = urlParams.get('selected').split(',');
+
+        selectedImages.forEach(id => {
+            const img = document.createElement('img');
+            img.src = `images/${id}.jpg`;
+            img.alt = `Görsel ${id}`;
+            img.style.width = '200px';  // Görsel boyutunu isteğe göre ayarlayabilirsiniz
+            img.style.margin = '10px';
+            gallery.appendChild(img);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Görsel Seçim ve Link Oluşturma</title>
+    <style>
+        #gallery img {
+            width: 200px;
+            margin: 10px;
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+        #gallery img.selected {
+            border-color: green;
+        }
+        #selected-list {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Görsel Seçim</h1>
+
+    <div id="gallery">
+        <!-- Görseller burada yüklenecek -->
+    </div>
+
+    <div id="selected-list">
+        <h3>Seçilen Görseller:</h3>
+        <ul id="selected-images">
+            <!-- Seçilen görsellerin listesi buraya eklenecek -->
+        </ul>
+    </div>
+
+    <button id="submit-btn">Link Oluştur</button>
+
+    <div id="result-link" style="display: none;">
+        <h3>Seçilen Görseller Linki:</h3>
+        <a href="" id="generated-link" target="_blank">Linki Görüntüle</a>
+    </div>
+
+    <script>
+        const gallery = document.getElementById('gallery');
+        const selectedImagesList = document.getElementById('selected-images');
+        const submitBtn = document.getElementById('submit-btn');
+        const resultLink = document.getElementById('result-link');
+        const generatedLink = document.getElementById('generated-link');
+
+        let selectedImages = [];
+
+        // Görselleri dinamik olarak yüklemek
+        for (let i = 1; i <= 400; i++) {
+            const img = document.createElement('img');
+            img.src = `images/${i}.jpg`;
+            img.alt = `Görsel ${i}`;
+            img.addEventListener('click', () => toggleSelection(img, i));
+            gallery.appendChild(img);
+        }
+
+        // Görsel seçimini değiştirme
+        function toggleSelection(img, index) {
+            if (img.classList.contains('selected')) {
+                img.classList.remove('selected');
+                selectedImages = selectedImages.filter(id => id !== index);
+            } else {
+                img.classList.add('selected');
+                selectedImages.push(index);
+            }
+            updateSelectedList();
+        }
+
+        // Seçilen görsellerin listesini güncelleme
+        function updateSelectedList() {
+            selectedImagesList.innerHTML = '';
+            selectedImages.forEach(id => {
+                const listItem = document.createElement('li');
+                listItem.textContent = `Görsel ${id}.jpg`;
+                selectedImagesList.appendChild(listItem);
+            });
+        }
+
+        // Submit butonuna tıklanınca link oluşturma
+        submitBtn.addEventListener('click', () => {
+            if (selectedImages.length > 0) {
+                const link = `gallery.html?selected=${selectedImages.join(',')}`;
+                generatedLink.href = link;
+                resultLink.style.display = 'block';
+            } else {
+                alert('Lütfen en az bir görsel seçin.');
+            }
+        });
+    </script>
+</body>
+</html>
